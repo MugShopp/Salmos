@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Salmos Diários</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #ffffff; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; padding: 40px 20px; overflow: hidden; position: relative; }
+    .status-bar { width: 100%; display: flex; justify-content: space-between; max-width: 400px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #bf9a5a; font-weight: 600; z-index: 10; }
+    .header { text-align: center; z-index: 10; margin-top: 20px; }
+    .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #1a1a1a; letter-spacing: 1px; border-bottom: 1px solid #bf9a5a; padding-bottom: 5px; margin-bottom: 5px; }
+    .header p { font-size: 12px; color: #bf9a5a; letter-spacing: 2px; text-transform: uppercase; }
+    .frase-container { width: 100%; max-width: 500px; text-align: center; z-index: 10; padding: 0 15px; margin: auto; }
+    .frase { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 300; font-size: 28px; line-height: 1.5; background: linear-gradient(to right, #1a1a1a 20%, #bf9a5a 40%, #e2c285 50%, #bf9a5a 60%, #1a1a1a 80%); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: brilhoDourado 5s linear infinite, revealText 1.5s ease forwards; }
+    @keyframes brilhoDourado { to { background-position: 200% center; } }
+    @keyframes revealText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .footer { text-align: center; z-index: 10; width: 100%; padding-bottom: 20px; }
+    .info-rodape { font-size: 8px; color: #999; letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
+    .particle { position: absolute; pointer-events: none; z-index: 1; animation: floatUp 10s linear infinite; }
+    @keyframes floatUp { 0% { transform: translateY(100vh); opacity: 0; } 10% { opacity: 0.7; } 80% { opacity: 0.7; } 100% { transform: translateY(20vh); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="status-bar">
+    <span id="relogio">00:00</span>
+    <span id="contador-dia">Dia: --</span>
+  </div>
+  <div class="header">
+    <h1>Salmos Diários</h1>
+    <p>Sua porção de fé diária</p>
+  </div>
+  <div class="frase-container">
+    <p class="frase" id="frase-display">Carregando...</p>
+  </div>
+  <div class="footer">
+    <p class="info-rodape">Feito com carinho por: MugShopp - Estúdio de Design e Personalizados - Taubaté/SP - (12) 99243.9101</p>
+  </div>
+  <div id="particle-field"></div>
+  <script>
+    async function carregarFrase() {
+      try {
+        const resposta = await fetch('salmo.txt');
+        const texto = await resposta.text();
+        const linhas = texto.split('\n').filter(l => l.trim() !== '');
+        const agora = new Date();
+        const diaDoAno = Math.floor((agora - new Date(agora.getFullYear(), 0, 0)) / 864e5);
+        document.getElementById('contador-dia').textContent = `Dia: ${diaDoAno}`;
+        document.getElementById('frase-display').textContent = linhas[diaDoAno - 1] || linhas[0];
+      } catch (e) { document.getElementById('frase-display').textContent = "A fé move montanhas."; }
+    }
+    function atualizarRelogio() {
+      document.getElementById('relogio').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+    function criarParticulas() {
+      const cont = document.getElementById('particle-field');
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#bf9a5a"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+        p.style.left = Math.random() * 90 + 5 + '%';
+        p.style.animationDuration = (8 + Math.random() * 5) + 's';
+        p.style.animationDelay = (Math.random() * 8) + 's';
+        cont.appendChild(p);
+      }
+    }
+    setInterval(atualizarRelogio, 1000);
+    atualizarRelogio();
+    carregarFrase();
+    criarParticulas();
+  </script>
+</body>
+</html>
