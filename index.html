@@ -7,20 +7,24 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background-color: #ffffff; color: #1a1a1a; font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; padding: 40px 20px; overflow: hidden; }
-    .status-bar { width: 100%; display: flex; justify-content: space-between; max-width: 400px; font-size: 10px; letter-spacing: 3px; color: #bf9a5a; font-weight: 600; }
+    
+    /* Cabeçalho de status em preto */
+    .status-bar { width: 100%; display: flex; justify-content: space-between; max-width: 400px; font-size: 10px; letter-spacing: 3px; color: #000000; font-weight: 600; }
+    
     .header { text-align: center; margin-top: 20px; }
     .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 24px; border-bottom: 1px solid #bf9a5a; padding-bottom: 5px; }
     .header p { font-size: 12px; color: #bf9a5a; letter-spacing: 2px; text-transform: uppercase; }
     
     .frase-container { width: 100%; max-width: 500px; text-align: center; padding: 20px; margin: auto; }
     
-    /* Frase principal */
-    .frase { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 24px; color: #1a1a1a; margin-bottom: 20px; }
+    /* Frase principal preta e elegante */
+    .frase { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 24px; color: #1a1a1a; margin-bottom: 20px; font-weight: 300; }
     
-    /* Frase reflexão (fade-in) */
+    /* Frase reflexão (fade-in) preta e fina */
     .reflexao { font-family: -apple-system, sans-serif; font-size: 14px; color: #000; font-weight: 200; opacity: 0; transition: opacity 2s ease-in; }
     
-    .footer { text-align: center; width: 100%; padding-bottom: 20px; font-size: 8px; color: #999; }
+    /* Rodapé com as informações solicitadas */
+    .footer { text-align: center; width: 100%; padding-bottom: 20px; font-size: 8px; color: #999; letter-spacing: 1px; text-transform: uppercase; }
   </style>
 </head>
 <body>
@@ -39,7 +43,7 @@
   </div>
 
   <div class="footer">
-    <p>MugShopp – Estúdio de Design & Personalizados</p>
+    <p>Feito com carinho por: MugShopp - Estúdio de Design e Personalizados - Taubaté/SP - (12) 99243.9101</p>
   </div>
 
   <script>
@@ -62,13 +66,10 @@
         
         document.getElementById('contador-dia').textContent = `Dia: ${diaDoAno}`;
         
-        // Define o índice baseado no dia do ano
         const indice = (diaDoAno - 1) % salmos.length;
         
-        // Exibe o Salmo imediatamente
         document.getElementById('frase-display').textContent = salmos[indice] || "A fé move montanhas.";
         
-        // Exibe a reflexão após 5 segundos com fade-in
         setTimeout(() => {
             const refEl = document.getElementById('reflexao-display');
             refEl.textContent = reflexoes[indice] || "Deus está sempre com você.";
